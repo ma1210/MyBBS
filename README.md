@@ -18,15 +18,23 @@
 [Laravel 8入門 リレーション編](https://dotinstall.com/lessons/basic_laravel_relations)
 
 
-
-
-
-
 ## 環境設置
 
 1. Dockerをインストールする
 
 2. プロジェクトをクローンする
+
+3. Composer install と 依存関係解決
+
+   ```
+   $ docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php81-composer:latest \
+    composer install --ignore-platform-reqs
+   ``` 
+   https://laravel.com/docs/9.x/sail#installing-composer-dependencies-for-existing-projects
 
 3. Sail 起動
 
@@ -36,9 +44,9 @@
 
     `$ ./vendor/bin/sail artisan key:generate`
 
-5. DB migrate
+5. DB migrate (Freshデータ)
 
-    `$ ./vendor/bin/sail artisan migrate`
+    `$ ./vendor/bin/sail artisan migrate:fresh`
 
 6. 確認
 
@@ -48,11 +56,6 @@
 
 - ./vendor/bin/sail: Permission denied
 
-    `$ sudo chmod -R 775 ./vendor`
+    現在のUserは docker groupに入れる
 
-- Nothing to migrate.  
-
-    ```
-    $ ./vendor/bin/sail artisan migrate:reset
-    $ ./vendor/bin/sail artisan migrate:
-    ```
+    `$ sudo usermod -aG docker username`
